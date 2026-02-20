@@ -1,3 +1,4 @@
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Globe, Leaf, Hammer, Truck, RotateCcw, CreditCard, Shield } from "lucide-react";
@@ -13,6 +14,8 @@ import { MapPin, Phone, Mail, Globe, Leaf, Hammer, Truck, RotateCcw, CreditCard,
  */
 
 export default function Home() {
+  const { user, loading, isAuthenticated, logout } = useAuth();
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation Header */}
@@ -24,10 +27,20 @@ export default function Home() {
             </div>
             <h1 style={{ fontFamily: 'var(--font-family-serif)' }} className="text-2xl font-bold text-primary">BaganLand</h1>
           </div>
-          <nav className="hidden md:flex gap-8">
+          <nav className="hidden md:flex gap-8 items-center">
             <a href="#about" className="text-foreground hover:text-primary transition-colors">About</a>
             <a href="#features" className="text-foreground hover:text-primary transition-colors">Why Us</a>
             <a href="#contact" className="text-foreground hover:text-primary transition-colors">Contact</a>
+            <a href="/products" className="text-foreground hover:text-primary transition-colors">Products</a>
+            <a href="/orders" className="text-foreground hover:text-primary transition-colors">Orders</a>
+            {isAuthenticated ? (
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-muted-foreground">{user?.name}</span>
+                <Button size="sm" variant="outline" onClick={logout}>Logout</Button>
+              </div>
+            ) : (
+              <Button size="sm" className="bg-primary hover:bg-primary/90">Sign In</Button>
+            )}
           </nav>
         </div>
       </header>
@@ -40,7 +53,7 @@ export default function Home() {
         </div>
         
         <div className="container relative z-10 py-20 lg:py-32">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Hero Content */}
             <div className="space-y-8">
               <div className="space-y-4">
@@ -361,7 +374,7 @@ export default function Home() {
                 width="100%" 
                 height="100%" 
                 style={{ border: 0, minHeight: '400px' }}
-                allowFullScreen 
+                allowFullScreen
                 loading="lazy" 
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
